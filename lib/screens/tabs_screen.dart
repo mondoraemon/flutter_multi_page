@@ -1,3 +1,5 @@
+import '../widgets/main_drawer.dart';
+
 import '../screens/favorites_screen.dart';
 
 import '../screens/categories_screen.dart';
@@ -9,9 +11,15 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  List<Widget> _pages = [
-    CategoriesScreen(),
-    FavoritesScreen(),
+  final List<Map<String, Object>> _pages = [
+    {
+      'page': CategoriesScreen(),
+      'title': 'Categoties',
+    },
+    {
+      'page': FavoritesScreen(),
+      'title': 'Your Favorite',
+    },
   ];
 
   int _selectedPageIndex = 0;
@@ -26,25 +34,32 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Meals'),
-        ),
-        body: _pages[_selectedPageIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: (index) => _selectPage(index),
-          backgroundColor: Theme.of(context).primaryColor,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.category),
-              title: Text('Categories'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.star),
-              title: Text('Favorites'),
-            ),
-          ],
-        ),
-      
+      appBar: AppBar(
+        title: Text(_pages[_selectedPageIndex]['title']),
+      ),
+      drawer: MainDrawer(),
+      body: _pages[_selectedPageIndex]['page'],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) => _selectPage(index),
+        backgroundColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Theme.of(context).accentColor,
+        currentIndex: _selectedPageIndex,
+        type: BottomNavigationBarType.shifting,
+        items: [
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.category),
+            title: Text('Categories'),
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.star),
+            title: Text('Favorites'),
+
+          ),
+        ],
+      ),
     );
   }
 }
